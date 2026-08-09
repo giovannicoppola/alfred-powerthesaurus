@@ -8,6 +8,10 @@ Ported to ALfred 5 and Python 3 from the original version by [@clarencecastillo]
   <img alt="Downloads"
        src="https://img.shields.io/github/downloads/giovannicoppola/alfred-powerthesaurus/total?color=purple&label=Downloads"><br/>
 </a>
+<a href="https://alfred.app/workflows/giovannicoppola/power-thesaurus/">
+<img alt="Gallery Downloads"
+src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgiovannicoppola%2Falfred-gallery-downloads%2Fmain%2Fdownloads.json&query=%24.power-thesaurus%5B0%5D.display&label=Gallery%20Downloads&color=blue&logo=alfred"><br/>
+</a>
 
 
 
@@ -42,10 +46,10 @@ Resulting synonyms or antonyms will be sequentially listed according to user rat
 ## Troubleshooting ##
 
 #### SSL Errors
-If you're having SSL issues, try temporarily disabling it by setting the workflow environment variable `ALFRED_PT_SSL_VERIFICATION` to `False`. This will bypass SSL verification as a workaround while waiting for the SSL certificate to be rectified. You can check Power Thesaurus's SSL certificate status [here](https://www.sslshopper.com/ssl-checker.html#hostname=api.powerthesaurus.org). Be sure to set it back to `True` when all's green.
+If you're having SSL issues, try temporarily unchecking **Use SSL verification** in the workflow's configuration. This bypasses SSL verification as a workaround while waiting for the SSL certificate to be rectified. You can check Power Thesaurus's SSL certificate status [here](https://www.sslshopper.com/ssl-checker.html#hostname=api.powerthesaurus.org). Be sure to re-check it when all's green.
 
 #### Other Errors
-For other errors, please open an issue describing how you got the error and together with the logs from `Alfred > Workflows > Debugging Mode` if possible. There's no proper error handling in place yet, so we'll have to troubleshoot things this way for now.
+Connection/API failures now show a "Could not reach PowerThesaurus" message rather than failing silently. For other errors, please open an issue describing how you got the error, together with the logs from `Alfred > Workflows > Debugging Mode` if possible.
 
 
 ## Related Links ##
@@ -53,6 +57,9 @@ For other errors, please open an issue describing how you got the error and toge
 [Alfred Forums](https://www.alfredforum.com/topic/10576-powerthesaurus-search/)
 
 ## Releases ##
+### August 2026 update (Version 3.4.1)
+- code review: graceful handling when the API can't be reached (was an uncaught traceback), guarded an empty query, and corrected the SSL-verification troubleshooting note (it's a checkbox now). Verified the PowerThesaurus API + schema still work end-to-end.
+
 ### November 2022 update (Version 3.1)
 - migration to Alfred 5
 

@@ -60,30 +60,37 @@ def main():
 
     from api import PowerThesaurus
 
-    input_text = sys.argv[1]
-    
-    query_type, query = input_text.split(' ', 1)
+    input_text = sys.argv[1] if len(sys.argv) > 1 else ''
+
+    parts = input_text.split(' ', 1)
+    query_type = parts[0] if parts else ''
+    query = parts[1] if len(parts) > 1 else ''
 
     if not query:
         return 0
 
-        
+
     # initializing the pt (API) object
     pt = PowerThesaurus(API_URL, WEB_URL, logger=log)
     ####################################
-    
+
 #     ###### MAIN CALL TO THE API
 #     ##############################
-    term = pt.search_query_match(query)
+    # a network/HTTP failure or an API change would otherwise dump a traceback
+    try:
+        term = pt.search_query_match(query)
+        # Fetch thesaurus terms from API
+        thesaurus_terms = list(pt.thesaurus_query((term or {}).get('id'), query_type))
+    except Exception as e:
+        log('PowerThesaurus API error: {!r}'.format(e))
+        print(json.dumps({"items": [{
+            "title": "Could not reach PowerThesaurus",
+            "subtitle": "Check your connection and try again",
+            "arg": "",
+            "icon": {"path": "icons/warning.png"}
+        }]}))
+        return 0
 #     ##############################
-        
-    log('search: found matching term for {!r}'.format(query))  
-    
-    #log('query output {!r}'.format(term))  # just word and id
-    
-    #     # Fetch thesaurus terms from API  
-    thesaurus_terms = pt.thesaurus_query ((term or {}).get('id'), query_type)
-    thesaurus_terms = list(thesaurus_terms) #need to covert back to a list because maps is not a list in Python3, it is a <map> object
     
     
     #log('thesaurus output {!r}'.format(thesaurus_terms))  
